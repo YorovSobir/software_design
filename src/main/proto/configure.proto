@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ru.spbau.mit.chat";
+option java_outer_classname = "ChatApp";
+//option objc_class_prefix = "HLW";
+
+package ru.spbau.mit.chat;
+
+// The greeting service definition.
+service Chat {
+    // Sends a greeting
+    rpc Greeting (Name) returns (Name) {}
+    rpc Talk (Message) returns (Message) {}
+}
+
+// The request message containing the user's name.
+message Name {
+    string name = 1;
+}
+
+message Message {
+    string message = 1;
+    string date = 2;
+}

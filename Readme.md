@@ -1,9 +1,8 @@
-# How to run command line interpreter?
+# Chat
 
-Get the last version of CLI (see branches).
+# Build chat application
+1. **./gradlew installDist**
 
-1. Build project. For that you must run **./gradle build**.
-
-2. if you want run tests you must use command **./gradle test**.
-
-3. if you want run CLI use command **./gradle run**
+# Run application
+1. Run server ("client") **./build/install/chat/bin/server [<name>, <port>]**
+2. Runc client **./build/install/chat/bin/client [<name>, <host>, <port>]**
