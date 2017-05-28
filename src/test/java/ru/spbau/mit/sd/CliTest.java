@@ -2,10 +2,7 @@ package ru.spbau.mit.sd;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.spbau.mit.sd.command.Cat;
-import ru.spbau.mit.sd.command.Echo;
-import ru.spbau.mit.sd.command.Pwd;
-import ru.spbau.mit.sd.command.Wc;
+import ru.spbau.mit.sd.command.*;
 
 import java.io.*;
 import java.util.Arrays;
@@ -75,4 +72,61 @@ public class CliTest {
         pwd.execute(env, System.in, System.out, "");
     }
 
+    @Test
+    public void testGrep() {
+        Grep grep = new Grep();
+        String str = "hello world\n"
+                        + "helloWorld\n"
+                        + "HellO world";
+
+        ByteArrayInputStream byteArrayInputStream =
+                new ByteArrayInputStream(str.getBytes());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        grep.execute(new Environment(), byteArrayInputStream,
+                byteArrayOutputStream, "-i -w hello");
+
+        Assert.assertEquals("hello world\nHellO world\n",
+                byteArrayOutputStream.toString());
+    }
+
+    @Test
+    public void testGrepIgnoreCase() {
+        Grep grep = new Grep();
+        ByteArrayInputStream byteArrayInputStream =
+                new ByteArrayInputStream("hEllO world".getBytes());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        grep.execute(new Environment(), byteArrayInputStream, byteArrayOutputStream, "-i hello");
+
+        Assert.assertEquals("hEllO world\n", byteArrayOutputStream.toString());
+    }
+
+    @Test
+    public void testGrepWord() {
+        Grep grep = new Grep();
+        ByteArrayInputStream byteArrayInputStream =
+                new ByteArrayInputStream("helloworld".getBytes());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        grep.execute(new Environment(), byteArrayInputStream,
+                byteArrayOutputStream, "-w hello");
+
+        Assert.assertEquals("", byteArrayOutputStream.toString());
+
+        byteArrayInputStream = new ByteArrayInputStream("hello world".getBytes());
+        grep.execute(new Environment(), byteArrayInputStream,
+                byteArrayOutputStream, "-w hello");
+
+        Assert.assertEquals("hello world\n", byteArrayOutputStream.toString());
+    }
+
+    @Test
+    public void testGrepLines() {
+        Grep grep = new Grep();
+        ByteArrayInputStream byteArrayInputStream =
+                new ByteArrayInputStream("hello\nmy\nworld".getBytes());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        grep.execute(new Environment(), byteArrayInputStream,
+                byteArrayOutputStream, "-A 2 hello");
+
+        Assert.assertEquals("hello\nmy\nworld\n", byteArrayOutputStream.toString());
+    }
 }

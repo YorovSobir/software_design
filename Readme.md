@@ -1,18 +1,12 @@
-# HW01 - Command Line Interpreter
+#HW02 - Grep implementation
 
-**Shell** - main class. Has method main() to run CLI.
+## Почему выбрали библиотеку JewelCli ?
+Потому что,
+1. Чтобы указать какие есть ключи максимум, что надо это написать объявление метода в интерфейсе и все.
+2. Можно указать короткие имена для ключей добавив атрибут shortName, что очень удобно.
+3. И самое главное самому ничего писать не надо, кроме объявления этих функций.
+4. На stackoverflow рекомендуют ее) https://stackoverflow.com/questions/1200054/java-library-for-parsing-command-line-parameters
+5. Можно явно указать, то что этот ключ со значением или нет и тип значения тоже
 
-**Preprocess** - class to process line, which entered by user.
-
-**Parser** - class to parse commands and their args from string. Take entered line and parse line. Save command and their args in fields commands and params. These fields has getter methods.
-
-**Runnable** - interface for all commands.
- - Has static method which get name of command and return object of class which implements Runnable (all commands implement this interface).
- - if command not found then create object of default class **NewCommand**, his method execute run System process.
- - Classes which implement Runnable:
-    - **Echo** override execute which method work as echo in command-line *nix system.
-    - **Cat**  override execute method which work as cat in command-line *nix system.
-    - **Exit** Call execute to exit.
-    - **Wc**  override execute method which work as wc in command-line *nix system.
-    - **Pwd** override execute method which work as pwd in command-line *nix system.
-    - **Assignment** override execute method to assign variable with its value.
+## Какие библиотеки рассмотрели
+1. JSimpleOpt поскольку на stackoverflow советовали в основном эти два. Выбрал первый поскольку для jopt-simple мало примеров (и не хотелось читать документацию).

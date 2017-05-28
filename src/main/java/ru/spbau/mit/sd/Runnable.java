@@ -14,7 +14,9 @@ import java.util.HashSet;
  */
 public interface Runnable {
      HashSet<String> COMMANDS =
-            new HashSet<>(Arrays.asList("echo", "cat", "wc", "pwd", "exit", "assignment"));
+            new HashSet<>(Arrays.asList("echo",
+                    "cat", "wc", "pwd",
+                    "exit", "assignment", "grep"));
 
     /**
      * static method to create object of required command
@@ -39,7 +41,8 @@ public interface Runnable {
 
     /**
      * execute command
-     * @param ios IOStream object for write and read
+     * @param inputStream InputStream object for read
+     * @param outputStream OutputStream for write
      * @param param parameters of command cat
      */
     void execute(Environment env, InputStream inputStream,
