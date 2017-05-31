@@ -78,12 +78,12 @@ public class ServerSide {
         server.blockUntilShutdown();
     }
 
-    static class GreeterImpl extends ChatGrpc.ChatImplBase {
+    private static class GreeterImpl extends ChatGrpc.ChatImplBase {
 
         private String friendName;
         private String name;
 
-        GreeterImpl(String name) {
+        public GreeterImpl(String name) {
             this.name = name;
         }
 
