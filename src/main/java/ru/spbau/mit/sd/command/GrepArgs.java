@@ -10,7 +10,7 @@ import java.util.List;
  * Every method define an argument option. Short name is "-v"
  * option, description is a message
  * that prints with this option in help. Unparsed is an option
- * without key (-v or --version).
+ * without key.
  * All description gets from <man grep>
  */
 public interface GrepArgs {

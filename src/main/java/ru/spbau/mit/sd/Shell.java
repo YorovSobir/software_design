@@ -66,6 +66,7 @@ public class Shell {
                     try {
                         command.execute(env, inputStream, outputStream, params.elementAt(i));
                     } catch (CommandException e) {
+                        System.out.println(e.getMessage());
                         break;
                     }
                 }

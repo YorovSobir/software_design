@@ -17,6 +17,13 @@ public class Grep implements Runnable {
     private Pattern pattern;
     private int linesCount;
 
+    /**
+     * Implements execute method in Runnable
+     * @param env
+     * @param inputStream InputStream object for read
+     * @param outputStream OutputStream for write
+     * @param param parameters of command cat
+     */
     @Override
     public void execute(Environment env, InputStream inputStream,
                         OutputStream outputStream, String param) {
