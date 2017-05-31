@@ -52,6 +52,9 @@ public class Grep implements Runnable {
                     sb.append(line).append("\n");
                     curLineCount--;
                 }
+                if (!reader.ready()) {
+                    break;
+                }
             }
         } catch (IOException e) {
             throw new CommandException("grep: Error while reading file.");
