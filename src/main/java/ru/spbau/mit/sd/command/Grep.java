@@ -1,5 +1,6 @@
 package ru.spbau.mit.sd.command;
 
+import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.CliFactory;
 import ru.spbau.mit.sd.Environment;
 import ru.spbau.mit.sd.Runnable;
@@ -20,7 +21,7 @@ public class Grep implements Runnable {
     public void execute(Environment env, InputStream inputStream,
                         OutputStream outputStream, String param) {
         String filename = getParams(param);
-        BufferedReader reader = null;
+        BufferedReader reader;
         if (filename != null) {
             try {
                 reader = new BufferedReader(new FileReader(filename));
@@ -57,19 +58,24 @@ public class Grep implements Runnable {
     }
 
     private String getParams(String param) {
-        GrepArgs args = null;
-        args = CliFactory.parseArguments(GrepArgs.class, param.split(" "));
 
-        List<String> unparsedArgs = args.getUnparsed();
-        String stringPattern = unparsedArgs.get(0).trim();
+        GrepArgs args;
+        try {
+            args = CliFactory.parseArguments(GrepArgs.class, param.split(" "));
+        } catch (ArgumentValidationException e) {
+            throw new CommandException("grep: " + e.getMessage());
+        }
+
+        List<String> unparsed = args.getUnparsed();
+        String stringPattern = unparsed.get(0).trim();
         if (stringPattern.charAt(0) == '\'' || stringPattern.charAt(0) == '\"') {
             stringPattern = stringPattern.substring(1, stringPattern.length() - 1);
         }
 
         String filename = null;
 
-        if (unparsedArgs.size() > 1) {
-            filename = unparsedArgs.get(1);
+        if (unparsed.size() > 1) {
+            filename = unparsed.get(1);
         }
 
         if (args.isWordRegexp()) {
