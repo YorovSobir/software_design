@@ -1,6 +1,7 @@
 package ru.spbau.mit.inventory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class for game inventory
@@ -48,5 +49,21 @@ public class Inventory {
      */
     public int getCapacity() {
         return capacity;
+    }
+
+    /**
+     * drop item from lists of items
+     * @param item - item which we want to drop
+     */
+    public void drop(Item item) {
+        items.remove(item);
+    }
+
+    /**
+     * get items
+     * @return List of items
+     */
+    public List<Item> getItems() {
+        return items;
     }
 }

@@ -27,8 +27,7 @@ public class ItemFactory {
      * @param name Type of feature
      * @return item object or null if the object could not be created
      * */
-    public Item getItem(String name) {
-        final Random rnd = new Random();
+    public Item getItem(String name, Random rnd) {
         switch (name) {
             case "Power":
                 return new Item("power", '^',

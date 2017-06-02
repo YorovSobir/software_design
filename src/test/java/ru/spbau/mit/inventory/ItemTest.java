@@ -2,7 +2,7 @@ package ru.spbau.mit.inventory;
 
 import asciiPanel.AsciiPanel;
 import org.junit.Test;
-import ru.spbau.mit.mob.Point;
+import ru.spbau.mit.world.Point;
 
 import static org.junit.Assert.*;
 

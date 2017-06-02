@@ -2,10 +2,10 @@ package ru.spbau.mit.mob;
 
 
 import ru.spbau.mit.attributes.Attributes;
+import ru.spbau.mit.world.Point;
 import ru.spbau.mit.world.Tile;
 import ru.spbau.mit.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -66,8 +66,7 @@ public class Troll extends Mob {
      * Override method for updating troll position
      */
     @Override
-    public void update() {
-        final Random rnd = new Random();
+    public void update(Random rnd) {
         int dx = -2 + rnd.nextInt(4);
         int dy = -2 + rnd.nextInt(4);
         moveBy(dx, dy);

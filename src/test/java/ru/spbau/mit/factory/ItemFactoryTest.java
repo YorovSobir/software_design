@@ -6,10 +6,12 @@ import ru.spbau.mit.world.World;
 import ru.spbau.mit.world.WorldBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
 public class ItemFactoryTest {
+    private Random rnd = new Random();
     private World world;
     private ArrayList<String> itemTypes =
             new ArrayList<>(Arrays.asList("Power", "Defense", "Health"));
@@ -18,7 +20,7 @@ public class ItemFactoryTest {
     public void getItemTest() throws Exception {
         createWorld();
         ItemFactory factory = new ItemFactory(world);
-        Item item = factory.getItem("Power");
+        Item item = factory.getItem("Power", rnd);
         assertTrue(item != null);
     }
 

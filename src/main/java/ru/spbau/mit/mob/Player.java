@@ -4,11 +4,12 @@ package ru.spbau.mit.mob;
 import ru.spbau.mit.attributes.Attributes;
 import ru.spbau.mit.inventory.Inventory;
 import ru.spbau.mit.inventory.Item;
+import ru.spbau.mit.world.Point;
 import ru.spbau.mit.world.Tile;
 import ru.spbau.mit.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Class for representing our Hero in game
@@ -27,7 +28,7 @@ public class Player extends Mob {
     public Player(Point pos, Attributes attr, Inventory inv,
                   List<String> mes, World world) {
         super(pos, attr, mes, world);
-        this.inventory = inv;
+        inventory = inv;
     }
 
     /**
@@ -62,9 +63,7 @@ public class Player extends Mob {
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update(Random rnd) {}
 
     /**
      * The method to add new Item to our inventory
@@ -76,13 +75,32 @@ public class Player extends Mob {
             Attributes attr = getAttr();
             attr.setAttackValue(attr.getAttackValue() + item.getAttack());
             attr.setDefenseValue(attr.getDefenseValue() + item.getDefence());
-            attr.setMaxHP(attr.getMaxHP() + item.getHealth());
             attr.setCurrentHP(attr.getCurrentHP() + item.getHealth());
+            if (attr.getMaxHP() < attr.getCurrentHP()) {
+                attr.setMaxHP(attr.getMaxHP() + item.getHealth());
+            }
             addMessage(item.getName() + " is inserted into the cell");
             getWorld().removeItem(item);
         } else {
             addMessage("No free cell for features");
         }
+    }
+
+    /**
+     * to drop item from our inventory
+     * @param item - item which we want to drop
+     */
+    public void dropItem(Item item) {
+        inventory.drop(item);
+        Attributes attr = getAttr();
+        attr.setAttackValue(attr.getAttackValue() - item.getAttack());
+        attr.setDefenseValue(attr.getDefenseValue() - item.getDefence());
+        attr.setCurrentHP(attr.getCurrentHP() - item.getHealth());
+        if (attr.getMaxHP() > 100) {
+            attr.setMaxHP(attr.getMaxHP() - item.getHealth());
+        }
+        addMessage(item.getName() + " is dropped from inventories");
+        getWorld().addAtEmptySpace(item, getPosition().getX(), getPosition().getY());
     }
 
     /**

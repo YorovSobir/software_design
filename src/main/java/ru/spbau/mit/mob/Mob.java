@@ -2,10 +2,11 @@ package ru.spbau.mit.mob;
 
 
 import ru.spbau.mit.attributes.Attributes;
+import ru.spbau.mit.world.Point;
 import ru.spbau.mit.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Abstract class for game characters
@@ -76,6 +77,6 @@ public abstract class Mob {
     /**
      * abstract method for updating mob's position
      */
-    abstract public void update();
+    abstract public void update(Random rnd);
 
 }

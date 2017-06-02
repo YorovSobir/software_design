@@ -2,11 +2,12 @@ package ru.spbau.mit.world;
 
 import ru.spbau.mit.inventory.Item;
 import ru.spbau.mit.mob.Mob;
-import ru.spbau.mit.mob.Point;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -61,7 +62,7 @@ public class World {
 	 * Get cell type
 	 * */
 	public Tile tile(int x, int y){
-		if (x < 0 || x >= width || y < 0 || y >= height)
+		if (x < 0 || x >= width || y < 0 || y >= height - 3)
 			return Tile.BOUNDS;
 		else
 			return tiles[x][y];
@@ -125,11 +126,11 @@ public class World {
 	/**
 	 * The method updates the state of the map
 	 * */
-	public void update(){
+	public void update(Random rnd){
 		Iterator<Mob> iterator = mobs.iterator();
 		while(iterator.hasNext()) {
 			Mob mob = iterator.next();
-			mob.update();
+			mob.update(rnd);
 			if (mob.getAttr().getCurrentHP() < 1) {
 				iterator.remove();
 			}
@@ -147,5 +148,34 @@ public class World {
 	 * */
 	public int getCountMob() {
 		return mobs.size();
+	}
+
+	public void addAtEmptySpace(Item item, int x, int y){
+		if (item == null)
+			return;
+		List<Point> points = new ArrayList<>();
+		List<Point> checked = new ArrayList<>();
+
+		points.add(new Point(x, y));
+
+		while (!points.isEmpty()){
+			Point p = points.remove(0);
+			checked.add(p);
+
+			int y1 = p.getY();
+			int x1 = p.getX();
+			if (!tile(x1, y1).isGround())
+				continue;
+
+			if (checkItem(x1, y1) == null && checkMob(x1, y1) == null){
+			    item.setPos(new Point(x1, y1));
+			    registerItem(item);
+				return;
+			} else {
+				List<Point> neighbors = p.neighbors8();
+				neighbors.removeAll(checked);
+				points.addAll(neighbors);
+			}
+		}
 	}
 }

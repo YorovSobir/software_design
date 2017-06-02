@@ -5,6 +5,7 @@ import org.junit.Test;
 import ru.spbau.mit.attributes.Attributes;
 import ru.spbau.mit.inventory.Inventory;
 import ru.spbau.mit.inventory.Item;
+import ru.spbau.mit.world.Point;
 import ru.spbau.mit.world.World;
 import ru.spbau.mit.world.WorldBuilder;
 

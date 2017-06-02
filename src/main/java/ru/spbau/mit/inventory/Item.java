@@ -1,7 +1,7 @@
 package ru.spbau.mit.inventory;
 
 
-import ru.spbau.mit.mob.Point;
+import ru.spbau.mit.world.Point;
 import java.awt.*;
 
 
@@ -92,5 +92,13 @@ public class Item {
      */
     public Point getPos() {
         return pos;
+    }
+
+    /**
+     * set new position
+     * @param pos - new position
+     */
+    public void setPos(Point pos) {
+        this.pos = pos;
     }
 }

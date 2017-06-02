@@ -23,6 +23,7 @@ public class PlayScreen implements Screen {
 	private int screenWidth;
 	private int screenHeight;
 	private ArrayList<String> messages;
+    private Random rnd = new Random();
 
 	/**
 	 * Constructor for creating main Screen
@@ -43,10 +44,9 @@ public class PlayScreen implements Screen {
 	 * @param itemFactory - factory for creating items
 	 */
 	private void createItems(ItemFactory itemFactory) {
-		Random rnd = new Random();
 		for(int i = 0; i < 20; i++) {
 			int idx = rnd.nextInt(itemFactory.getItemTypes().size());
-			Item item = itemFactory.getItem(itemFactory.getItemTypes().get(idx));
+			Item item = itemFactory.getItem(itemFactory.getItemTypes().get(idx), rnd);
 			world.registerItem(item);
 		}
 	}
@@ -107,38 +107,39 @@ public class PlayScreen implements Screen {
                 player.getAttr().getMaxHP());
 		String dmg = String.format("%d dmg", player.getAttr().getAttackValue());
 		String def = String.format("%d def", player.getAttr().getDefenseValue());
-		terminal.write(health, screenWidth - 12, 2);
-        terminal.write(dmg, screenWidth - 12, 3);
-        terminal.write(def, screenWidth - 12, 4);
+		terminal.write(health, screenWidth - 12, 1);
+        terminal.write(dmg, screenWidth - 12, 2);
+        terminal.write(def, screenWidth - 12, 3);
         displayHelp(terminal);
 	}
 
     private void displayHelp(AsciiPanel terminal) {
-	    terminal.write("=============", screenWidth - 15, 7);
-	    terminal.write("@ - Player", screenWidth - 15, 8);
-        terminal.write("o - Orc", screenWidth - 15, 9);
-        terminal.write("t - Troll", screenWidth - 15, 10);
-        terminal.write("d - Dragon", screenWidth - 15, 11);
-        terminal.write("^ - Power", screenWidth - 15, 12);
-        terminal.write("# - Defence", screenWidth - 15, 13);
-        terminal.write("+ - Health", screenWidth - 15, 14);
-        terminal.write("=============", screenWidth - 15, 15);
-        terminal.write("[g] - get item", screenWidth - 15, 16);
+	    terminal.write("=============", screenWidth - 15, 5);
+	    terminal.write("@ - Player", screenWidth - 15, 6);
+        terminal.write("o - Orc", screenWidth - 15, 7);
+        terminal.write("t - Troll", screenWidth - 15, 8);
+        terminal.write("d - Dragon", screenWidth - 15, 9);
+        terminal.write("^ - Power", screenWidth - 15, 10);
+        terminal.write("# - Defence", screenWidth - 15, 11);
+        terminal.write("+ - Health", screenWidth - 15, 12);
+        terminal.write("=============", screenWidth - 15, 13);
+        terminal.write("g - get item", screenWidth - 15, 14);
+        terminal.write("d - drop item", screenWidth - 15, 15);
         terminal.write("kill all mobs", screenWidth - 15, 18);
         terminal.write("to win!", screenWidth - 15, 19);
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
-		int top = screenHeight - messages.size() + 1;
+		int top = screenHeight - 3;
 		for (int i = 0; i < messages.size(); i++){
-			terminal.writeCenter(messages.get(i), top + i);
+			terminal.writeCenter(messages.get(i), top + i % 4);
 		}
 		messages.clear();
 	}
 
 	private void displayTiles(AsciiPanel terminal, int left, int top) {
 		for (int x = 0; x < screenWidth - 16; x++){
-			for (int y = 0; y < screenHeight; y++){
+			for (int y = 0; y < screenHeight - 3; y++){
 				int wx = x + left;
 				int wy = y + top;
 
@@ -164,20 +165,24 @@ public class PlayScreen implements Screen {
 			}
 		}
 	}
+
 	/**
 	 * Keyboard processor
 	 * */
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
 		switch (key.getKeyCode()){
-		case KeyEvent.VK_ESCAPE: return new LoseScreen();
-		case KeyEvent.VK_LEFT: player.moveBy(-1, 0); break;
-		case KeyEvent.VK_RIGHT: player.moveBy( 1, 0); break;
-		case KeyEvent.VK_UP: player.moveBy( 0,-1); break;
-		case KeyEvent.VK_DOWN: player.moveBy( 0, 1); break;
-		case KeyEvent.VK_G: player.addItem(world.checkItem(player.getPosition().getX(), player.getPosition().getY()));
+			case KeyEvent.VK_ESCAPE: return new LoseScreen();
+			case KeyEvent.VK_LEFT: player.moveBy(-1, 0); break;
+			case KeyEvent.VK_RIGHT: player.moveBy( 1, 0); break;
+			case KeyEvent.VK_UP: player.moveBy( 0,-1); break;
+			case KeyEvent.VK_DOWN: player.moveBy( 0, 1); break;
+			case KeyEvent.VK_G: player.addItem(
+					world.checkItem(player.getPosition().getX(),
+							player.getPosition().getY())); break;
+			case KeyEvent.VK_D: return new InventoryScreen(player, this);
 		}
-		world.update();
+		world.update(rnd);
 		if (player.getAttr().getCurrentHP()  < 1)
 			return new LoseScreen();
 		if (world.getCountMob() == 1) {

@@ -1,6 +1,7 @@
 package ru.spbau.mit.mob;
 
 import ru.spbau.mit.attributes.Attributes;
+import ru.spbau.mit.world.Point;
 import ru.spbau.mit.world.Tile;
 import ru.spbau.mit.world.World;
 
@@ -70,8 +71,7 @@ public class Dragon extends Mob {
      * Override method for updating dragon position
      */
     @Override
-    public void update() {
-        final Random rnd = new Random();
+    public void update(Random rnd) {
         int dx = -2 + rnd.nextInt(7);
         int dy = -2 + rnd.nextInt(7);
         moveBy(dx, dy);
